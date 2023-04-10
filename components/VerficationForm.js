@@ -84,7 +84,6 @@ export default function VerificationForm() {
             onPaste={(e) => handleInputPaste(e, index)}
             onClick={handleInputClick}
             onBlur={(e) => handleInputBlur(index, e.target.value)}
-            autoFocus
             className="w-11 h-11 border border-black rounded-md text-center focus:border-blue-600 focus:outline-0"
           />
         ))}
