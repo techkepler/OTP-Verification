@@ -12,8 +12,8 @@ export default function VerificationForm() {
     const newDigits = [...digits];
     newDigits[index] = e.target.value;
     setDigits(newDigits);
-    if (e.target.value && index < digits.length - 1) {
-      inputRefs.current[index + 1].focus();
+    if (e.target.value && index >= 0) {
+      inputRefs.current[index - 1]?.focus();
     }
   };
 
@@ -21,14 +21,17 @@ export default function VerificationForm() {
     const clipboardData = e.clipboardData || window.clipboardData;
     const pastedData = clipboardData.getData("Text");
     const newDigits = [...digits];
-    for (let i = 0; i < pastedData.length; i++) {
-      if (index + i < digits.length) {
-        newDigits[index + i] = pastedData[i];
+    console.log(pastedData.length, digits.length, "length");
+    for (let i = pastedData.length - 1; i >= 0; i--) {
+      if (index - i < digits.length) {
+        console.log(index, i, digits.length, "checking");
+        newDigits[1] = pastedData[i];
       }
     }
+
     setDigits(newDigits);
-    if (index < digits.length - 1) {
-      inputRefs.current[index + pastedData.length]?.focus();
+    if (index <= 0) {
+      inputRefs.current[index]?.focus();
     }
     e.preventDefault();
   };
