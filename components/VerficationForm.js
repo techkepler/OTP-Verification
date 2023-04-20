@@ -21,17 +21,14 @@ export default function VerificationForm() {
     const clipboardData = e.clipboardData || window.clipboardData;
     const pastedData = clipboardData.getData("Text");
     const newDigits = [...digits];
-    console.log(pastedData.length, digits.length, "length");
     for (let i = pastedData.length - 1; i >= 0; i--) {
       if (index - i < digits.length) {
-        console.log(index, i, digits.length, "checking");
-        newDigits[1] = pastedData[i];
+        newDigits[index - i] = pastedData[i];
       }
     }
-
     setDigits(newDigits);
-    if (index <= 0) {
-      inputRefs.current[index]?.focus();
+    if (index < digits.length - 1) {
+      inputRefs.current[index + pastedData.length]?.focus();
     }
     e.preventDefault();
   };
