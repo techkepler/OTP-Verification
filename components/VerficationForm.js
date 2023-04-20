@@ -5,6 +5,7 @@ import axios from "axios";
 export default function VerificationForm() {
   const [digits, setDigits] = useState(["", "", "", "", "", ""]);
   const [error, setError] = useState(false);
+  const [isGreater, setIsGreater] = useState(false);
   const inputRefs = useRef([]);
   const router = useRouter();
 
@@ -13,6 +14,11 @@ export default function VerificationForm() {
     newDigits[index] = e.target.value;
     setDigits(newDigits);
     if (e.target.value && index < digits.length - 1) {
+      // if (parseInt(e.target.value) > 5) {
+      //   setIsGreater(true);
+      // } else {
+      //   setIsGreater(false);
+      // }
       inputRefs.current[index + 1].focus();
     }
   };
@@ -50,7 +56,7 @@ export default function VerificationForm() {
     if (isValid) {
       const code = digits.join("");
       try {
-        await axios.post("/api/verify", { code });
+        await axios.post("http://localhost:8000/api/verify", { code });
         router.push("/success/");
       } catch (err) {
         setError(true);
@@ -72,7 +78,7 @@ export default function VerificationForm() {
       className="flex  flex-col items-center justify-center gap-4"
     >
       <h1 className="font-bold text-xl">Verification Code:</h1>
-      <div className="digit-inputs flex items-center justify-center gap-2">
+      <div className="digit-inputs flex  items-center justify-center gap-2">
         {digits.map((digit, index) => (
           <input
             key={index}
@@ -84,7 +90,9 @@ export default function VerificationForm() {
             onPaste={(e) => handleInputPaste(e, index)}
             onClick={handleInputClick}
             onBlur={(e) => handleInputBlur(index, e.target.value)}
-            className="w-11 h-11 border border-black rounded-md text-center focus:border-blue-600 focus:outline-0"
+            className={`w-11 h-11 border border-black rounded-md text-center  focus:outline-0 ${
+              parseInt(digit) > 5 ? "border-red-600" : "border-blue-600"
+            }`}
           />
         ))}
       </div>
